@@ -1,0 +1,12 @@
+{
+  "name": "StormpathUser",
+  "plural": "StormpathUsers",
+  "base": "User",
+  "idInjection": false,
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": [],
+  "strict": false
+}
