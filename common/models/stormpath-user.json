@@ -1,7 +1,7 @@
 {
   "name": "StormpathUser",
   "plural": "StormpathUsers",
-  "base": "User",
+  "base": "PersistedModel",
   "idInjection": false,
   "properties": {},
   "validations": [],
