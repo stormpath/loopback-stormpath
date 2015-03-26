@@ -412,11 +412,11 @@ module.exports = function(StormpathUser) {
    * @param {object} user The StormpathUser this token is being generated for.
    * @param {Function} cb The generator must pass back the new token with this function call
    */
-  StormpathUser.generateVerificationToken = function(user, cb) {
-    crypto.randomBytes(64, function(err, buf) {
-      cb(err, buf && buf.toString('hex'));
-    });
-  };
+  //StormpathUser.generateVerificationToken = function(user, cb) {
+  //  crypto.randomBytes(64, function(err, buf) {
+  //    cb(err, buf && buf.toString('hex'));
+  //  });
+  //};
 
   /**
    * Confirm the user's identity.
