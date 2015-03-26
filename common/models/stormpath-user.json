@@ -3,7 +3,40 @@
   "plural": "StormpathUsers",
   "base": "PersistedModel",
   "idInjection": false,
-  "properties": {},
+  "properties": {
+    "givenName": {
+      "type": "string",
+      "required": true
+    },
+    "middleName": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string",
+      "required": true
+    },
+    "username": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "password": {
+      "type": "string",
+      "required": true
+    },
+    "status": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "date"
+    },
+    "modifiedAt": {
+      "type": "date"
+    }
+  },
+  "hidden": ["password"],
   "validations": [],
   "relations": {},
   "acls": [],
