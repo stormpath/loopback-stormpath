@@ -504,15 +504,6 @@ module.exports = function(StormpathUser) {
     }
   };
 
-  /*!
-   * Hash the plain password
-   */
-  StormpathUser.hashPassword = function(plain) {
-    this.validatePassword(plain);
-    var salt = bcrypt.genSaltSync(this.settings.saltWorkFactor || SALT_WORK_FACTOR);
-    return bcrypt.hashSync(plain, salt);
-  };
-
   StormpathUser.validatePassword = function(plain) {
     if (typeof plain === 'string' && plain) {
       return true;
