@@ -467,42 +467,41 @@ module.exports = function(StormpathUser) {
    * @callback {Function} callback
    * @param {Error} err
    */
+  //StormpathUser.resetPassword = function(options, cb) {
+  //  var StormpathUserModel = this;
+  //  var ttl = StormpathUserModel.settings.resetPasswordTokenTTL || DEFAULT_RESET_PW_TTL;
 
-  StormpathUser.resetPassword = function(options, cb) {
-    var StormpathUserModel = this;
-    var ttl = StormpathUserModel.settings.resetPasswordTokenTTL || DEFAULT_RESET_PW_TTL;
-
-    options = options || {};
-    if (typeof options.email === 'string') {
-      StormpathUserModel.findOne({ where: {email: options.email} }, function(err, user) {
-        if (err) {
-          cb(err);
-        } else if (user) {
-          // create a short lived access token for temp login to change password
-          // TODO(ritch) - eventually this should only allow password change
-          user.accessTokens.create({ttl: ttl}, function(err, accessToken) {
-            if (err) {
-              cb(err);
-            } else {
-              cb();
-              StormpathUserModel.emit('resetPasswordRequest', {
-                email: options.email,
-                accessToken: accessToken,
-                user: user
-              });
-            }
-          });
-        } else {
-          cb();
-        }
-      });
-    } else {
-      var err = new Error('email is required');
-      err.statusCode = 400;
-      err.code = 'EMAIL_REQUIRED';
-      cb(err);
-    }
-  };
+  //  options = options || {};
+  //  if (typeof options.email === 'string') {
+  //    StormpathUserModel.findOne({ where: {email: options.email} }, function(err, user) {
+  //      if (err) {
+  //        cb(err);
+  //      } else if (user) {
+  //        // create a short lived access token for temp login to change password
+  //        // TODO(ritch) - eventually this should only allow password change
+  //        user.accessTokens.create({ttl: ttl}, function(err, accessToken) {
+  //          if (err) {
+  //            cb(err);
+  //          } else {
+  //            cb();
+  //            StormpathUserModel.emit('resetPasswordRequest', {
+  //              email: options.email,
+  //              accessToken: accessToken,
+  //              user: user
+  //            });
+  //          }
+  //        });
+  //      } else {
+  //        cb();
+  //      }
+  //    });
+  //  } else {
+  //    var err = new Error('email is required');
+  //    err.statusCode = 400;
+  //    err.code = 'EMAIL_REQUIRED';
+  //    cb(err);
+  //  }
+  //};
 
   StormpathUser.validatePassword = function(plain) {
     if (typeof plain === 'string' && plain) {
