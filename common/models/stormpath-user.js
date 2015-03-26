@@ -535,16 +535,6 @@ module.exports = function(StormpathUser) {
     this.settings.maxTTL = this.settings.maxTTL || DEFAULT_MAX_TTL;
     this.settings.ttl = this.settings.ttl || DEFAULT_TTL;
 
-    StormpathUserModel.setter.password = function(plain) {
-      if (plain.indexOf('$2a$') === 0 && plain.length === 60) {
-        // The password is already hashed. It can be the case
-        // when the instance is loaded from DB
-        this.$password = plain;
-      } else {
-        this.$password = this.constructor.hashPassword(plain);
-      }
-    };
-
     // Make sure emailVerified is not set by creation
     StormpathUserModel.beforeRemote('create', function(ctx, user, next) {
       var body = ctx.req.body;
