@@ -595,18 +595,18 @@ module.exports = function(StormpathUser) {
       }
     );
 
-    StormpathUserModel.remoteMethod(
-      'confirm',
-      {
-        description: 'Confirm a user registration with email verification token',
-        accepts: [
-          {arg: 'uid', type: 'string', required: true},
-          {arg: 'token', type: 'string', required: true},
-          {arg: 'redirect', type: 'string'}
-        ],
-        http: {verb: 'get', path: '/confirm'}
-      }
-    );
+    //StormpathUserModel.remoteMethod(
+    //  'confirm',
+    //  {
+    //    description: 'Confirm a user registration with email verification token',
+    //    accepts: [
+    //      {arg: 'uid', type: 'string', required: true},
+    //      {arg: 'token', type: 'string', required: true},
+    //      {arg: 'redirect', type: 'string'}
+    //    ],
+    //    http: {verb: 'get', path: '/confirm'}
+    //  }
+    //);
 
     //StormpathUserModel.remoteMethod(
     //  'resetPassword',
