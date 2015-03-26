@@ -639,17 +639,6 @@ module.exports = function(StormpathUser) {
     assert(loopback.AccessToken, 'AccessToken model must be defined before StormpathUser model');
     StormpathUserModel.accessToken = loopback.AccessToken;
 
-    // email validation regex
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    StormpathUserModel.validatesFormatOf('email', {with: re, message: 'Must provide a valid email'});
-
-    // FIXME: We need to add support for uniqueness of composite keys in juggler
-    if (!(StormpathUserModel.settings.realmRequired || StormpathUserModel.settings.realmDelimiter)) {
-      StormpathUserModel.validatesUniquenessOf('email', {message: 'Email already exists'});
-      StormpathUserModel.validatesUniquenessOf('username', {message: 'StormapthUser already exists'});
-    }
-
     return StormpathUserModel;
   };
 
