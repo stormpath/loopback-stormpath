@@ -608,16 +608,16 @@ module.exports = function(StormpathUser) {
       }
     );
 
-    StormpathUserModel.remoteMethod(
-      'resetPassword',
-      {
-        description: 'Reset password for a user with email',
-        accepts: [
-          {arg: 'options', type: 'object', required: true, http: {source: 'body'}}
-        ],
-        http: {verb: 'post', path: '/reset'}
-      }
-    );
+    //StormpathUserModel.remoteMethod(
+    //  'resetPassword',
+    //  {
+    //    description: 'Reset password for a user with email',
+    //    accepts: [
+    //      {arg: 'options', type: 'object', required: true, http: {source: 'body'}}
+    //    ],
+    //    http: {verb: 'post', path: '/reset'}
+    //  }
+    //);
 
     StormpathUserModel.on('attached', function() {
       StormpathUserModel.afterRemote('confirm', function(ctx, inst, next) {
