@@ -141,10 +141,11 @@ module.exports = function(StormpathUser) {
    * @param {Error} err Error object
    * @param {AccessToken} token Access token if login is successful
    */
-  StormpathUser.login = function(credentials, include, fn) {
+  StormpathUser.login = function(credentials, include, callback) {
     var self = this;
+
     if (typeof include === 'function') {
-      fn = include;
+      callback = include;
       include = undefined;
     }
 
@@ -171,13 +172,13 @@ module.exports = function(StormpathUser) {
       var err1 = new Error('realm is required');
       err1.statusCode = 400;
       err1.code = 'REALM_REQUIRED';
-      return fn(err1);
+      return callback(err1);
     }
     if (!query.email && !query.username) {
       var err2 = new Error('username or email is required');
       err2.statusCode = 400;
       err2.code = 'USERNAME_EMAIL_REQUIRED';
-      return fn(err2);
+      return callback(err2);
     }
 
     self.findOne({where: query}, function(err, user) {
@@ -186,7 +187,7 @@ module.exports = function(StormpathUser) {
       defaultError.code = 'LOGIN_FAILED';
 
       function tokenHandler(err, token) {
-        if (err) return fn(err);
+        if (err) return callback(err);
         if (Array.isArray(include) ? include.indexOf('user') !== -1 : include === 'user') {
           // NOTE(bajtos) We can't set token.user here:
           //  1. token.user already exists, it's a function injected by
@@ -196,17 +197,17 @@ module.exports = function(StormpathUser) {
           // See also loopback#161 and loopback#162
           token.__data.user = user;
         }
-        fn(err, token);
+        callback(err, token);
       }
 
       if (err) {
         debug('An error is reported from StormpathUser.findOne: %j', err);
-        fn(defaultError);
+        callback(defaultError);
       } else if (user) {
         user.hasPassword(credentials.password, function(err, isMatch) {
           if (err) {
             debug('An error is reported from StormpathUser.hasPassword: %j', err);
-            fn(defaultError);
+            callback(defaultError);
           } else if (isMatch) {
             if (self.settings.emailVerificationRequired && !user.emailVerified) {
               // Fail to log in if email verification is not done yet
@@ -214,7 +215,7 @@ module.exports = function(StormpathUser) {
               err = new Error('login failed as the email has not been verified');
               err.statusCode = 401;
               err.code = 'LOGIN_FAILED_EMAIL_NOT_VERIFIED';
-              return fn(err);
+              return callback(err);
             } else {
               if (user.createAccessToken.length === 2) {
                 user.createAccessToken(credentials.ttl, tokenHandler);
@@ -224,12 +225,12 @@ module.exports = function(StormpathUser) {
             }
           } else {
             debug('The password is invalid for user %s', query.email || query.username);
-            fn(defaultError);
+            callback(defaultError);
           }
         });
       } else {
         debug('No matching record is found for user %s', query.email || query.username);
-        fn(defaultError);
+        callback(defaultError);
       }
     });
   };
