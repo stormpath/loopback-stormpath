@@ -149,31 +149,32 @@ module.exports = function(StormpathUser) {
       include = undefined;
     }
 
-    include = (include || '');
-    if (Array.isArray(include)) {
-      include = include.map(function(val) {
-        return val.toLowerCase();
-      });
-    } else {
-      include = include.toLowerCase();
-    }
+    //include = (include || '');
+    //if (Array.isArray(include)) {
+    //  include = include.map(function(val) {
+    //    return val.toLowerCase();
+    //  });
+    //} else {
+    //  include = include.toLowerCase();
+    //}
 
-    var realmDelimiter;
-    // Check if realm is required
-    var realmRequired = !!(self.settings.realmRequired ||
-      self.settings.realmDelimiter);
-    if (realmRequired) {
-      realmDelimiter = self.settings.realmDelimiter;
-    }
-    var query = self.normalizeCredentials(credentials, realmRequired,
-      realmDelimiter);
+    //var realmDelimiter;
+    //// Check if realm is required
+    //var realmRequired = !!(self.settings.realmRequired ||
+    //  self.settings.realmDelimiter);
+    //if (realmRequired) {
+    //  realmDelimiter = self.settings.realmDelimiter;
+    //}
+    //var query = self.normalizeCredentials(credentials, realmRequired,
+    //  realmDelimiter);
 
-    if (realmRequired && !query.realm) {
-      var err1 = new Error('realm is required');
-      err1.statusCode = 400;
-      err1.code = 'REALM_REQUIRED';
-      return callback(err1);
-    }
+    //if (realmRequired && !query.realm) {
+    //  var err1 = new Error('realm is required');
+    //  err1.statusCode = 400;
+    //  err1.code = 'REALM_REQUIRED';
+    //  return callback(err1);
+    //}
+
     if (!query.email && !query.username) {
       var err2 = new Error('username or email is required');
       err2.statusCode = 400;
