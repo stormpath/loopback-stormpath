@@ -129,7 +129,7 @@ module.exports = function(StormpathUser) {
    * Login a user by with the given `credentials`.
    *
    * ```js
-   *    StormpathUser.login({username: 'foo', password: 'bar'}, function (err, token) {
+   *    StormpathUser.login({username: 'foo', password: 'bar'}, function(err, token) {
   *      console.log(token.id);
   *    });
    * ```
