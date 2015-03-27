@@ -501,46 +501,46 @@ module.exports = function(StormpathUser) {
     this.settings.maxTTL = this.settings.maxTTL || DEFAULT_MAX_TTL;
     this.settings.ttl = this.settings.ttl || DEFAULT_TTL;
 
-    StormpathUserModel.remoteMethod(
-      'login',
-      {
-        description: 'Login a user with username/email and password',
-        accepts: [
-          {arg: 'credentials', type: 'object', required: true, http: {source: 'body'}},
-          {arg: 'include', type: 'string', http: {source: 'query' },
-            description: 'Related objects to include in the response. ' +
-            'See the description of return value for more details.'}
-        ],
-        returns: {
-          arg: 'accessToken', type: 'object', root: true,
-          description:
-            'The response body contains properties of the AccessToken created on login.\n' +
-            'Depending on the value of `include` parameter, the body may contain ' +
-            'additional properties:\n\n' +
-            '  - `user` - `{StormpathUser}` - Data of the currently logged in user. (`include=user`)\n\n'
-        },
-        http: {verb: 'post'}
-      }
-    );
+    //StormpathUserModel.remoteMethod(
+    //  'login',
+    //  {
+    //    description: 'Login a user with username/email and password',
+    //    accepts: [
+    //      {arg: 'credentials', type: 'object', required: true, http: {source: 'body'}},
+    //      {arg: 'include', type: 'string', http: {source: 'query' },
+    //        description: 'Related objects to include in the response. ' +
+    //        'See the description of return value for more details.'}
+    //    ],
+    //    returns: {
+    //      arg: 'accessToken', type: 'object', root: true,
+    //      description:
+    //        'The response body contains properties of the AccessToken created on login.\n' +
+    //        'Depending on the value of `include` parameter, the body may contain ' +
+    //        'additional properties:\n\n' +
+    //        '  - `user` - `{StormpathUser}` - Data of the currently logged in user. (`include=user`)\n\n'
+    //    },
+    //    http: {verb: 'post'}
+    //  }
+    //);
 
-    StormpathUserModel.remoteMethod(
-      'logout',
-      {
-        description: 'Logout a user with access token',
-        accepts: [
-          {arg: 'access_token', type: 'string', required: true, http: function(ctx) {
-            var req = ctx && ctx.req;
-            var accessToken = req && req.accessToken;
-            var tokenID = accessToken && accessToken.id;
+    //StormpathUserModel.remoteMethod(
+    //  'logout',
+    //  {
+    //    description: 'Logout a user with access token',
+    //    accepts: [
+    //      {arg: 'access_token', type: 'string', required: true, http: function(ctx) {
+    //        var req = ctx && ctx.req;
+    //        var accessToken = req && req.accessToken;
+    //        var tokenID = accessToken && accessToken.id;
 
-            return tokenID;
-          }, description: 'Do not supply this argument, it is automatically extracted ' +
-            'from request headers.'
-          }
-        ],
-        http: {verb: 'all'}
-      }
-    );
+    //        return tokenID;
+    //      }, description: 'Do not supply this argument, it is automatically extracted ' +
+    //        'from request headers.'
+    //      }
+    //    ],
+    //    http: {verb: 'all'}
+    //  }
+    //);
 
     //StormpathUserModel.remoteMethod(
     //  'confirm',
