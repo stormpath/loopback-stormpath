@@ -5,19 +5,6 @@ var crypto = require('crypto');
 var debug = require('debug')('loopback:stormpath-user');
 var assert = require('assert');
 
-var bcrypt;
-try {
-  // Try the native module first
-  bcrypt = require('bcrypt');
-  // Browserify returns an empty object
-  if (bcrypt && typeof bcrypt.compare !== 'function') {
-    bcrypt = require('bcryptjs');
-  }
-} catch (err) {
-  // Fall back to pure JS impl
-  bcrypt = require('bcryptjs');
-}
-
 var DEFAULT_TTL = 1209600; // 2 weeks in seconds
 var DEFAULT_RESET_PW_TTL = 15 * 60; // 15 mins in seconds
 var DEFAULT_MAX_TTL = 31556926; // 1 year in seconds
@@ -281,10 +268,11 @@ module.exports = function(StormpathUser) {
    */
   StormpathUser.prototype.hasPassword = function(plain, fn) {
     if (this.password && plain) {
-      bcrypt.compare(plain, this.password, function(err, isMatch) {
-        if (err) return fn(err);
-        fn(null, isMatch);
-      });
+      fn(null, false);
+      //bcrypt.compare(plain, this.password, function(err, isMatch) {
+      //  if (err) return fn(err);
+      //  fn(null, isMatch);
+      //});
     } else {
       fn(null, false);
     }
