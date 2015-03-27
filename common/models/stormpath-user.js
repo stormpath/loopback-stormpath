@@ -261,7 +261,6 @@ module.exports = function(StormpathUser) {
    * @callback {Function} callback
    * @param {Error} err
    */
-
   StormpathUser.logout = function(tokenId, fn) {
     this.relations.accessTokens.modelTo.findById(tokenId, function(err, accessToken) {
       if (err) {
@@ -280,7 +279,6 @@ module.exports = function(StormpathUser) {
    * @param {String} password The plain text password
    * @returns {Boolean}
    */
-
   StormpathUser.prototype.hasPassword = function(plain, fn) {
     if (this.password && plain) {
       bcrypt.compare(plain, this.password, function(err, isMatch) {
