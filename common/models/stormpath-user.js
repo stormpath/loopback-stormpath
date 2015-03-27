@@ -566,18 +566,18 @@ module.exports = function(StormpathUser) {
     //  }
     //);
 
-    StormpathUserModel.on('attached', function() {
-      StormpathUserModel.afterRemote('confirm', function(ctx, inst, next) {
-        if (ctx.args.redirect !== undefined) {
-          if (!ctx.res) {
-            return next(new Error('The transport does not support HTTP redirects.'));
-          }
-          ctx.res.location(ctx.args.redirect);
-          ctx.res.status(302);
-        }
-        next();
-      });
-    });
+    //StormpathUserModel.on('attached', function() {
+    //  StormpathUserModel.afterRemote('confirm', function(ctx, inst, next) {
+    //    if (ctx.args.redirect !== undefined) {
+    //      if (!ctx.res) {
+    //        return next(new Error('The transport does not support HTTP redirects.'));
+    //      }
+    //      ctx.res.location(ctx.args.redirect);
+    //      ctx.res.status(302);
+    //    }
+    //    next();
+    //  });
+    //});
 
     // default models
     assert(loopback.Email, 'Email model must be defined before StormpathUser model');
