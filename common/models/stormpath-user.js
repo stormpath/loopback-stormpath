@@ -55,7 +55,7 @@ module.exports = function(StormpathUser) {
    * @param {String|Error} err The error string or object
    * @param {AccessToken} token The generated access token object
    */
-  User.prototype.createAccessToken = function(ttl, options, cb) {
+  StormpathUser.prototype.createAccessToken = function(ttl, options, cb) {
     if (cb === undefined && typeof options === 'function') {
       // createAccessToken(ttl, cb)
       cb = options;
@@ -141,7 +141,6 @@ module.exports = function(StormpathUser) {
    * @param {Error} err Error object
    * @param {AccessToken} token Access token if login is successful
    */
-
   StormpathUser.login = function(credentials, include, fn) {
     var self = this;
     if (typeof include === 'function') {
