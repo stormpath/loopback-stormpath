@@ -324,83 +324,82 @@ module.exports = function(StormpathUser) {
    *  object, instead simply execute the callback with the token! StormpathUser saving
    *  and email sending will be handled in the `verify()` method.
    */
+  //StormpathUser.prototype.verify = function(options, fn) {
+  //  var user = this;
+  //  var userModel = this.constructor;
+  //  assert(typeof options === 'object', 'options required when calling user.verify()');
+  //  assert(options.type, 'You must supply a verification type (options.type)');
+  //  assert(options.type === 'email', 'Unsupported verification type');
+  //  assert(options.to || this.email, 'Must include options.to when calling user.verify() or the user must have an email property');
+  //  assert(options.from, 'Must include options.from when calling user.verify() or the user must have an email property');
 
-  StormpathUser.prototype.verify = function(options, fn) {
-    var user = this;
-    var userModel = this.constructor;
-    assert(typeof options === 'object', 'options required when calling user.verify()');
-    assert(options.type, 'You must supply a verification type (options.type)');
-    assert(options.type === 'email', 'Unsupported verification type');
-    assert(options.to || this.email, 'Must include options.to when calling user.verify() or the user must have an email property');
-    assert(options.from, 'Must include options.from when calling user.verify() or the user must have an email property');
+  //  options.redirect = options.redirect || '/';
+  //  options.template = path.resolve(options.template || path.join(__dirname, '..', '..', 'templates', 'verify.ejs'));
+  //  options.user = this;
+  //  options.protocol = options.protocol || 'http';
 
-    options.redirect = options.redirect || '/';
-    options.template = path.resolve(options.template || path.join(__dirname, '..', '..', 'templates', 'verify.ejs'));
-    options.user = this;
-    options.protocol = options.protocol || 'http';
+  //  var app = userModel.app;
+  //  options.host = options.host || (app && app.get('host')) || 'localhost';
+  //  options.port = options.port || (app && app.get('port')) || 3000;
+  //  options.restApiRoot = options.restApiRoot || (app && app.get('restApiRoot')) || '/api';
+  //  options.verifyHref = options.verifyHref ||
+  //    options.protocol +
+  //    '://' +
+  //    options.host +
+  //    ':' +
+  //    options.port +
+  //    options.restApiRoot +
+  //    userModel.http.path +
+  //    userModel.sharedClass.find('confirm', true).http.path +
+  //    '?uid=' +
+  //    options.user.id +
+  //    '&redirect=' +
+  //    options.redirect;
 
-    var app = userModel.app;
-    options.host = options.host || (app && app.get('host')) || 'localhost';
-    options.port = options.port || (app && app.get('port')) || 3000;
-    options.restApiRoot = options.restApiRoot || (app && app.get('restApiRoot')) || '/api';
-    options.verifyHref = options.verifyHref ||
-      options.protocol +
-      '://' +
-      options.host +
-      ':' +
-      options.port +
-      options.restApiRoot +
-      userModel.http.path +
-      userModel.sharedClass.find('confirm', true).http.path +
-      '?uid=' +
-      options.user.id +
-      '&redirect=' +
-      options.redirect;
+  //  // Email model
+  //  var Email = options.mailer || this.constructor.email || loopback.getModelByType(loopback.Email);
 
-    // Email model
-    var Email = options.mailer || this.constructor.email || loopback.getModelByType(loopback.Email);
+  //  // Set a default token generation function if one is not provided
+  //  var tokenGenerator = options.generateVerificationToken || StormpathUser.generateVerificationToken;
 
-    // Set a default token generation function if one is not provided
-    var tokenGenerator = options.generateVerificationToken || StormpathUser.generateVerificationToken;
+  //  tokenGenerator(user, function(err, token) {
+  //    if (err) { return fn(err); }
 
-    tokenGenerator(user, function(err, token) {
-      if (err) { return fn(err); }
+  //    user.verificationToken = token;
+  //    user.save(function(err) {
+  //      if (err) {
+  //        fn(err);
+  //      } else {
+  //        sendEmail(user);
+  //      }
+  //    });
+  //  });
 
-      user.verificationToken = token;
-      user.save(function(err) {
-        if (err) {
-          fn(err);
-        } else {
-          sendEmail(user);
-        }
-      });
-    });
+  //  // TODO - support more verification types
+  //  function sendEmail(user) {
+  //    options.verifyHref += '&token=' + user.verificationToken;
 
-    // TODO - support more verification types
-    function sendEmail(user) {
-      options.verifyHref += '&token=' + user.verificationToken;
+  //    options.text = options.text || 'Please verify your email by opening this link in a web browser:\n\t{href}';
 
-      options.text = options.text || 'Please verify your email by opening this link in a web browser:\n\t{href}';
+  //    options.text = options.text.replace('{href}', options.verifyHref);
 
-      options.text = options.text.replace('{href}', options.verifyHref);
-
-      var template = loopback.template(options.template);
-      Email.send({
-        to: options.to || user.email,
-        from: options.from,
-        subject: options.subject || 'Thanks for Registering',
-        text: options.text,
-        html: template(options),
-        headers: options.headers || {}
-      }, function(err, email) {
-        if (err) {
-          fn(err);
-        } else {
-          fn(null, {email: email, token: user.verificationToken, uid: user.id});
-        }
-      });
-    }
-  };
+  //    var template = loopback.template(options.template);
+  //    Email.send({
+  //      to: options.to || user.email,
+  //      from: options.from,
+  //      subject: options.subject || 'Thanks for Registering',
+  //      text: options.text,
+  //      html: template(options),
+  //      headers: options.headers || {}
+  //    }, function(err, email) {
+  //      if (err) {
+  //        fn(err);
+  //      } else {
+  //        fn(null, {email: email, token: user.verificationToken, uid: user.id});
+  //      }
+  //    });
+  //  }
+  //};
 
   /**
    * A default verification token generator which accepts the user the token is
