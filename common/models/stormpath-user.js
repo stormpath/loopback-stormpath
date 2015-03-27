@@ -130,8 +130,8 @@ module.exports = function(StormpathUser) {
    *
    * ```js
    *    StormpathUser.login({username: 'foo', password: 'bar'}, function(err, token) {
-  *      console.log(token.id);
-  *    });
+   *      console.log(token.id);
+   *    });
    * ```
    *
    * @param {Object} credentials username/password or email/password
