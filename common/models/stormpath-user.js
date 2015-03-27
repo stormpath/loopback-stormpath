@@ -141,100 +141,90 @@ module.exports = function(StormpathUser) {
    * @param {Error} err Error object
    * @param {AccessToken} token Access token if login is successful
    */
-  StormpathUser.login = function(credentials, include, callback) {
-    var self = this;
-
-    if (typeof include === 'function') {
-      callback = include;
-      include = undefined;
-    }
-
-    //include = (include || '');
-    //if (Array.isArray(include)) {
-    //  include = include.map(function(val) {
-    //    return val.toLowerCase();
-    //  });
-    //} else {
-    //  include = include.toLowerCase();
-    //}
-
-    //var realmDelimiter;
-    //// Check if realm is required
-    //var realmRequired = !!(self.settings.realmRequired ||
-    //  self.settings.realmDelimiter);
-    //if (realmRequired) {
-    //  realmDelimiter = self.settings.realmDelimiter;
-    //}
-    //var query = self.normalizeCredentials(credentials, realmRequired,
-    //  realmDelimiter);
-
-    //if (realmRequired && !query.realm) {
-    //  var err1 = new Error('realm is required');
-    //  err1.statusCode = 400;
-    //  err1.code = 'REALM_REQUIRED';
-    //  return callback(err1);
-    //}
-
-    if (!query.email && !query.username) {
-      var err2 = new Error('username or email is required');
-      err2.statusCode = 400;
-      err2.code = 'USERNAME_EMAIL_REQUIRED';
-      return callback(err2);
-    }
-
-    self.findOne({where: query}, function(err, user) {
-      var defaultError = new Error('login failed');
-      defaultError.statusCode = 401;
-      defaultError.code = 'LOGIN_FAILED';
-
-      function tokenHandler(err, token) {
-        if (err) return callback(err);
-        if (Array.isArray(include) ? include.indexOf('user') !== -1 : include === 'user') {
-          // NOTE(bajtos) We can't set token.user here:
-          //  1. token.user already exists, it's a function injected by
-          //     "AccessToken belongsTo StormpathUser" relation
-          //  2. ModelBaseClass.toJSON() ignores own properties, thus
-          //     the value won't be included in the HTTP response
-          // See also loopback#161 and loopback#162
-          token.__data.user = user;
-        }
-        callback(err, token);
-      }
-
-      if (err) {
-        debug('An error is reported from StormpathUser.findOne: %j', err);
-        callback(defaultError);
-      } else if (user) {
-        user.hasPassword(credentials.password, function(err, isMatch) {
-          if (err) {
-            debug('An error is reported from StormpathUser.hasPassword: %j', err);
-            callback(defaultError);
-          } else if (isMatch) {
-            if (self.settings.emailVerificationRequired && !user.emailVerified) {
-              // Fail to log in if email verification is not done yet
-              debug('StormpathUser email has not been verified');
-              err = new Error('login failed as the email has not been verified');
-              err.statusCode = 401;
-              err.code = 'LOGIN_FAILED_EMAIL_NOT_VERIFIED';
-              return callback(err);
-            } else {
-              if (user.createAccessToken.length === 2) {
-                user.createAccessToken(credentials.ttl, tokenHandler);
-              } else {
-                user.createAccessToken(credentials.ttl, credentials, tokenHandler);
-              }
-            }
-          } else {
-            debug('The password is invalid for user %s', query.email || query.username);
-            callback(defaultError);
-          }
-        });
-      } else {
-        debug('No matching record is found for user %s', query.email || query.username);
-        callback(defaultError);
-      }
-    });
-  };
+//  StormpathUser.login = function(credentials, include, callback) {
+//    var self = this;
+//
+//    if (typeof include === 'function') {
+//      callback = include;
+//      include = undefined;
+//    }
+//
+//    //include = (include || '');
+//    //if (Array.isArray(include)) {
+//    //  include = include.map(function(val) {
+//    //    return val.toLowerCase();
+//    //  });
+//    //} else {
+//    //  include = include.toLowerCase();
+//    //}
+//
+//    //var realmDelimiter;
+//    //// Check if realm is required
+//    //var realmRequired = !!(self.settings.realmRequired ||
+//    //  self.settings.realmDelimiter);
+//    //if (realmRequired) {
+//    //  realmDelimiter = self.settings.realmDelimiter;
+//    //}
+//    //var query = self.normalizeCredentials(credentials, realmRequired,
+//    //  realmDelimiter);
+//
+//    //if (realmRequired && !query.realm) {
+//    //  var err1 = new Error('realm is required');
+//    //  err1.statusCode = 400;
+//    //  err1.code = 'REALM_REQUIRED';
+//    //  return callback(err1);
+//    //}
+//
+//    if (!(credentials.email || credentials.username)) {
+//      var err = new Error('username or email is required');
+//
+//      err.statusCode = 400;
+//      err.code = 'USERNAME_EMAIL_REQUIRED';
+//
+//      return callback(err);
+//    }
+//
+//    if (!credentials.password) {
+//      var err = new Error('password is required');
+//
+//      err.statusCode = 400;
+//      err.code = 'PASSWORD_REQUIRED';
+//
+//      return callback(err);
+//    }
+//
+//    self.authenticate(credentials.email || credentials.username, credentials.password, function(err, account) {
+//      var defaultError = new Error('login failed');
+//      defaultError.statusCode = 401;
+//      defaultError.code = 'LOGIN_FAILED';
+//
+//      if (err) return callback(defaultError);
+//
+//      function tokenHandler(err, token) {
+//        if (err) return callback(err);
+//
+//        //if (Array.isArray(include) ? include.indexOf('user') !== -1 : include === 'user') {
+//          // NOTE(bajtos) We can't set token.user here:
+//          //  1. token.user already exists, it's a function injected by
+//          //     "AccessToken belongsTo StormpathUser" relation
+//          //  2. ModelBaseClass.toJSON() ignores own properties, thus
+//          //     the value won't be included in the HTTP response
+//          // See also loopback#161 and loopback#162
+//        //  token.__data.user = user;
+//        //}
+//
+//        return callback(err, token);
+//      }
+//
+//      //if (user.createAccessToken.length === 2) {
+//      //  user.createAccessToken(credentials.ttl, tokenHandler);
+//      //} else {
+//      //  user.createAccessToken(credentials.ttl, credentials, tokenHandler);
+//      //}
+//
+//      callback(null, account);
+//    });
+//  };
 
   /**
    * Logout a user with the given accessToken id.
@@ -249,17 +239,17 @@ module.exports = function(StormpathUser) {
    * @callback {Function} callback
    * @param {Error} err
    */
-  StormpathUser.logout = function(tokenId, fn) {
-    this.relations.accessTokens.modelTo.findById(tokenId, function(err, accessToken) {
-      if (err) {
-        fn(err);
-      } else if (accessToken) {
-        accessToken.destroy(fn);
-      } else {
-        fn(new Error('could not find accessToken'));
-      }
-    });
-  };
+//  StormpathUser.logout = function(tokenId, fn) {
+//    this.relations.accessTokens.modelTo.findById(tokenId, function(err, accessToken) {
+//      if (err) {
+//        fn(err);
+//      } else if (accessToken) {
+//        accessToken.destroy(fn);
+//      } else {
+//        fn(new Error('could not find accessToken'));
+//      }
+//    });
+//  };
 
   /**
    * Compare the given `password` with the users hashed password.
@@ -267,17 +257,17 @@ module.exports = function(StormpathUser) {
    * @param {String} password The plain text password
    * @returns {Boolean}
    */
-  StormpathUser.prototype.hasPassword = function(plain, fn) {
-    if (this.password && plain) {
-      fn(null, false);
-      //bcrypt.compare(plain, this.password, function(err, isMatch) {
-      //  if (err) return fn(err);
-      //  fn(null, isMatch);
-      //});
-    } else {
-      fn(null, false);
-    }
-  };
+//  StormpathUser.prototype.hasPassword = function(plain, fn) {
+//    if (this.password && plain) {
+//      fn(null, false);
+//      //bcrypt.compare(plain, this.password, function(err, isMatch) {
+//      //  if (err) return fn(err);
+//      //  fn(null, isMatch);
+//      //});
+//    } else {
+//      fn(null, false);
+//    }
+//  };
 
   /**
    * Verify a user's identity by sending them a confirmation email.
@@ -413,36 +403,36 @@ module.exports = function(StormpathUser) {
    * @callback {Function} callback
    * @param {Error} err
    */
-  StormpathUser.confirm = function(uid, token, redirect, fn) {
-    this.findById(uid, function(err, user) {
-      if (err) {
-        fn(err);
-      } else {
-        if (user && user.verificationToken === token) {
-          user.verificationToken = undefined;
-          user.emailVerified = true;
-          user.save(function(err) {
-            if (err) {
-              fn(err);
-            } else {
-              fn();
-            }
-          });
-        } else {
-          if (user) {
-            err = new Error('Invalid token: ' + token);
-            err.statusCode = 400;
-            err.code = 'INVALID_TOKEN';
-          } else {
-            err = new Error('StormpathUser not found: ' + uid);
-            err.statusCode = 404;
-            err.code = 'USER_NOT_FOUND';
-          }
-          fn(err);
-        }
-      }
-    });
-  };
+//  StormpathUser.confirm = function(uid, token, redirect, fn) {
+//    this.findById(uid, function(err, user) {
+//      if (err) {
+//        fn(err);
+//      } else {
+//        if (user && user.verificationToken === token) {
+//          user.verificationToken = undefined;
+//          user.emailVerified = true;
+//          user.save(function(err) {
+//            if (err) {
+//              fn(err);
+//            } else {
+//              fn();
+//            }
+//          });
+//        } else {
+//          if (user) {
+//            err = new Error('Invalid token: ' + token);
+//            err.statusCode = 400;
+//            err.code = 'INVALID_TOKEN';
+//          } else {
+//            err = new Error('StormpathUser not found: ' + uid);
+//            err.statusCode = 404;
+//            err.code = 'USER_NOT_FOUND';
+//          }
+//          fn(err);
+//        }
+//      }
+//    });
+//  };
 
   /**
    * Create a short lived acess token for temporary login. Allows users
@@ -489,18 +479,18 @@ module.exports = function(StormpathUser) {
   //  }
   //};
 
-  StormpathUser.validatePassword = function(plain) {
-    if (typeof plain === 'string' && plain) {
-      return true;
-    }
-    var err =  new Error('Invalid password: ' + plain);
-    err.statusCode = 422;
-    throw err;
-  };
-
-  /*!
-   * Setup an extended user model.
-   */
+//  StormpathUser.validatePassword = function(plain) {
+//    if (typeof plain === 'string' && plain) {
+//      return true;
+//    }
+//    var err =  new Error('Invalid password: ' + plain);
+//    err.statusCode = 422;
+//    throw err;
+//  };
+//
+//  /*!
+//   * Setup an extended user model.
+//   */
 
   StormpathUser.setup = function() {
     // We need to call the base class's setup method
@@ -510,15 +500,6 @@ module.exports = function(StormpathUser) {
     // max ttl
     this.settings.maxTTL = this.settings.maxTTL || DEFAULT_MAX_TTL;
     this.settings.ttl = this.settings.ttl || DEFAULT_TTL;
-
-    // Make sure emailVerified is not set by creation
-    StormpathUserModel.beforeRemote('create', function(ctx, user, next) {
-      var body = ctx.req.body;
-      if (body && body.emailVerified) {
-        body.emailVerified = false;
-      }
-      next();
-    });
 
     StormpathUserModel.remoteMethod(
       'login',
