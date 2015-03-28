@@ -1,6 +1,6 @@
 {
   "name": "loopback-stormpath",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Stormpath integration for Loopback.",
   "keywords": [
     "stormpath",
@@ -12,7 +12,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": "stormpath/loopback-stormpath",
   "author": "Stormpath, Inc.",
