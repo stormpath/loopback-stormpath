@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 0.1
+  - 0.11
+  - 0.12
+script:
+- npm test
+branches:
+  only:
+  - develop
+  - master
+env:
+  global:
+    - secure: pUPjwZ6T+a8irxSNYiXgniViD+VKq/FL1ayJxa+9FhONm05P2tptp53W43a6c40bGrLbEmprwN9bm2IXahP5tOTlOLTj3U8eU2Nel9/EHJF13SpSEDIQSObb/TXIbnbjjwsLsP2hegkOsF/cQk7tFQw7tDwCIeOSp+bJAm2LIM4=
+    - secure: ICS6YWwYmJ6058wC+LbjbxSvBzlQGU+jIL1WEIkPCY1nEl7zNJN8UI08qIXbT7JKzEmb9EIrD6cHlF17Jrgex7MxCj8miMiEOB3F15GvMfCTGcCV+vCjvihdP7Vord+tkh7jzQuuOFU9qT4bKTZ+3Jj9XT9fSxpBw8Qch4Dacow=
