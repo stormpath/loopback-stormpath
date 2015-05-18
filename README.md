@@ -60,7 +60,8 @@ After that, go ahead and open up `server/model-config.json`, and do two things:
 
 ```javascript
 "StormpathUser": {
-  "dataSource": "stormpath"
+  "dataSource": "stormpath",
+  "public": true
 }
 ```
 
