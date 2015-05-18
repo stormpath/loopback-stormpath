@@ -97,6 +97,14 @@ us: support@stormpath.com
 All library changes, in descending order.
 
 
+### Version 0.0.2
+
+**Not yet released.**
+
+- Improving usage documentation to include exposing the built-in `StormpathUser`
+  model over REST.
+
+
 ### Version 0.0.1
 
 **Released on March 27, 2015.**
