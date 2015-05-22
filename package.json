@@ -12,7 +12,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "mocha --no-timeouts"
   },
   "repository": "stormpath/loopback-stormpath",
   "author": "Stormpath, Inc.",
