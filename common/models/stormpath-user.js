@@ -148,90 +148,92 @@ module.exports = function(StormpathUser) {
    *      console.log(token.id);
    *    });
    */
-//  StormpathUser.login = function(credentials, include, callback) {
-//    var self = this;
-//
-//    if (typeof include === 'function') {
-//      callback = include;
-//      include = undefined;
-//    }
-//
-//    //include = (include || '');
-//    //if (Array.isArray(include)) {
-//    //  include = include.map(function(val) {
-//    //    return val.toLowerCase();
-//    //  });
-//    //} else {
-//    //  include = include.toLowerCase();
-//    //}
-//
-//    //var realmDelimiter;
-//    //// Check if realm is required
-//    //var realmRequired = !!(self.settings.realmRequired ||
-//    //  self.settings.realmDelimiter);
-//    //if (realmRequired) {
-//    //  realmDelimiter = self.settings.realmDelimiter;
-//    //}
-//    //var query = self.normalizeCredentials(credentials, realmRequired,
-//    //  realmDelimiter);
-//
-//    //if (realmRequired && !query.realm) {
-//    //  var err1 = new Error('realm is required');
-//    //  err1.statusCode = 400;
-//    //  err1.code = 'REALM_REQUIRED';
-//    //  return callback(err1);
-//    //}
-//
-//    if (!(credentials.email || credentials.username)) {
-//      var err = new Error('username or email is required');
-//
-//      err.statusCode = 400;
-//      err.code = 'USERNAME_EMAIL_REQUIRED';
-//
-//      return callback(err);
-//    }
-//
-//    if (!credentials.password) {
-//      var err = new Error('password is required');
-//
-//      err.statusCode = 400;
-//      err.code = 'PASSWORD_REQUIRED';
-//
-//      return callback(err);
-//    }
-//
-//    self.authenticate(credentials.email || credentials.username, credentials.password, function(err, account) {
-//      var defaultError = new Error('login failed');
-//      defaultError.statusCode = 401;
-//      defaultError.code = 'LOGIN_FAILED';
-//
-//      if (err) return callback(defaultError);
-//
-//      function tokenHandler(err, token) {
-//        if (err) return callback(err);
-//
-//        //if (Array.isArray(include) ? include.indexOf('user') !== -1 : include === 'user') {
-//          // NOTE(bajtos) We can't set token.user here:
-//          //  1. token.user already exists, it's a function injected by
-//          //     "AccessToken belongsTo StormpathUser" relation
-//          //  2. ModelBaseClass.toJSON() ignores own properties, thus
-//          //     the value won't be included in the HTTP response
-//          // See also loopback#161 and loopback#162
-//        //  token.__data.user = user;
-//        //}
-//
-//        return callback(err, token);
-//      }
-//
-//      //if (user.createAccessToken.length === 2) {
-//      //  user.createAccessToken(credentials.ttl, tokenHandler);
-//      //} else {
-//      //  user.createAccessToken(credentials.ttl, credentials, tokenHandler);
-//      //}
-//
-//      callback(null, account);
-//    });
-//  };
+  StormpathUser.login = function(credentials, include, callback) {
+    var self = this;
+
+    // Handle invalid parameters.
+    if (!(credentials.email || credentials.username)) {
+      var err = new Error('username or email is required.');
+
+      err.statusCode = 400;
+      err.code = 'USERNAME_EMAIL_REQUIRED';
+
+      return callback(err);
+    } else if (!credentials.password) {
+      var err = new Error('password is required.');
+
+      err.statusCode = 400;
+      err.code = 'PASSWORD_REQUIRED';
+
+      return callback(err);
+    }
+
+    if (typeof include === 'function') {
+      callback = include;
+      include = undefined;
+    }
+
+    // If an `include` parameter was specified, we'll either:
+    //   - Convert the array of include values to lowercase, or
+    //   - Convert the include string itself to lowercase.
+    include = (include || '');
+    if (Array.isArray(include)) {
+      include = include.map(function(val) {
+        return val.toLowerCase();
+      });
+    } else {
+      include = include.toLowerCase();
+    }
+
+    //var realmDelimiter;
+    //// Check if realm is required
+    //var realmRequired = !!(self.settings.realmRequired ||
+    //  self.settings.realmDelimiter);
+    //if (realmRequired) {
+    //  realmDelimiter = self.settings.realmDelimiter;
+    //}
+    //var query = self.normalizeCredentials(credentials, realmRequired,
+    //  realmDelimiter);
+
+    //if (realmRequired && !query.realm) {
+    //  var err1 = new Error('realm is required');
+    //  err1.statusCode = 400;
+    //  err1.code = 'REALM_REQUIRED';
+    //  return callback(err1);
+    //}
+
+    self.authenticate(credentials.email || credentials.username, credentials.password, function(err, account) {
+      var defaultError = new Error('login failed');
+      defaultError.statusCode = 401;
+      defaultError.code = 'LOGIN_FAILED';
+
+      if (err) return callback(defaultError);
+
+      function tokenHandler(err, token) {
+        if (err) return callback(err);
+
+        //if (Array.isArray(include) ? include.indexOf('user') !== -1 : include === 'user') {
+          // NOTE(bajtos) We can't set token.user here:
+          //  1. token.user already exists, it's a function injected by
+          //     "AccessToken belongsTo StormpathUser" relation
+          //  2. ModelBaseClass.toJSON() ignores own properties, thus
+          //     the value won't be included in the HTTP response
+          // See also loopback#161 and loopback#162
+        //  token.__data.user = user;
+        //}
+
+        return callback(err, token);
+      }
+
+      //if (user.createAccessToken.length === 2) {
+      //  user.createAccessToken(credentials.ttl, tokenHandler);
+      //} else {
+      //  user.createAccessToken(credentials.ttl, credentials, tokenHandler);
+      //}
+
+      callback(null, account);
+    });
+  };
 
   /**
    * Logout a user with the given accessToken id.
