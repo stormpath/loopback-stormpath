@@ -1,14 +1,12 @@
 language: node_js
 node_js:
-  - 0.1
-  - 0.11
-  - 0.12
+  - "0.12"
+  - "0.11"
+  - "0.10"
+  - "iojs"
+  - "iojs-v1.0.4"
 script:
-- npm test
-branches:
-  only:
-  - develop
-  - master
+  - npm test
 env:
   global:
     - secure: pUPjwZ6T+a8irxSNYiXgniViD+VKq/FL1ayJxa+9FhONm05P2tptp53W43a6c40bGrLbEmprwN9bm2IXahP5tOTlOLTj3U8eU2Nel9/EHJF13SpSEDIQSObb/TXIbnbjjwsLsP2hegkOsF/cQk7tFQw7tDwCIeOSp+bJAm2LIM4=
