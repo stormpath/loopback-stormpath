@@ -1,3 +1,5 @@
+'use strict';
+
 var loopback = require('loopback');
 var path = require('path');
 var SALT_WORK_FACTOR = 10;
