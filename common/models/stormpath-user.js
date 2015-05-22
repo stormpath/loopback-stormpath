@@ -128,20 +128,25 @@ module.exports = function(StormpathUser) {
   };
 
   /**
-   * Login a user by with the given `credentials`.
+   * Login a user with the given credentials.
    *
-   * ```js
-   *    StormpathUser.login({username: 'foo', password: 'bar'}, function(err, token) {
+   * @param {Object} credentials - A credentials object.
+   * @param {String} [credentials.username] - The username of the user.  Either
+   *   this OR credentials.email must be specified.
+   * @param {String} [credentials.email] - The email address of the user.  Either
+   *   this OR credentials.username must be specified.
+   * @param {String} credentials.password - This user's password.
+   * @param {String[]|String} [include] - Optionally set it to "user" to
+   *   include the user info
+   * @callback {Function} callback - Callback function.
+   * @param {Error} err - The error object.
+   * @param {Object} token - The access token if login is successful.
+   *
+   * Usage:
+   *
+   *    StormpathUser.login({ username: 'foo', password: 'bar' }, function(err, token) {
    *      console.log(token.id);
    *    });
-   * ```
-   *
-   * @param {Object} credentials username/password or email/password
-   * @param {String[]|String} [include] Optionally set it to "user" to include
-   * the user info
-   * @callback {Function} callback Callback function
-   * @param {Error} err Error object
-   * @param {AccessToken} token Access token if login is successful
    */
 //  StormpathUser.login = function(credentials, include, callback) {
 //    var self = this;
