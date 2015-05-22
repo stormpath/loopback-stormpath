@@ -591,10 +591,9 @@ module.exports = function(StormpathUser) {
     return StormpathUserModel;
   };
 
-  /*!
+  /**
    * Setup the base user.
    */
-
   StormpathUser.setup();
 
 };
