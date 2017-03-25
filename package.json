@@ -24,6 +24,6 @@
     "loopback-connector": "^1.2.1",
     "loopback-connector-stormpath": "latest",
     "loopback-datasource-juggler": "^2.21.0",
-    "stormpath": "^0.9.2"
+    "stormpath": "^0.15.0"
   }
 }
